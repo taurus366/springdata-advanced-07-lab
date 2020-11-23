@@ -4,12 +4,15 @@ import course.springdata.advanced.dao.IngredientRepository;
 import course.springdata.advanced.dao.LabelRepository;
 import course.springdata.advanced.dao.ShampooRepository;
 import course.springdata.advanced.entity.Ingredient;
+import course.springdata.advanced.entity.Shampoo;
 import course.springdata.advanced.util.PrintUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,6 +34,7 @@ public class AppInitializer implements CommandLineRunner {
 
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
 //        // Fetch Shampoos by Size
@@ -79,9 +83,17 @@ public class AppInitializer implements CommandLineRunner {
 //                .forEach(PrintUtil::printShampoo);
 //
 //        System.out.println("-".repeat(150)+ "\n");
-        String nameToDelete = "Macadamia Oil";
-        Ingredient IngredientToDelete = ingredientRepo.findByName(nameToDelete).get();
-        shampooRepo.findWithIngredientsIn(Set.of(nameToDelete)).forEach(shampoo -> shampoo.getIngredients().remove(IngredientToDelete));
-        System.out.println(ingredientRepo.deleteAllByName("Apple"));
+        // Delete ingredients by name
+                String nameToDelete = "Macadamia Oil";
+        Ingredient ingredientToDelete = ingredientRepo.findByName(nameToDelete).get();
+        List<Shampoo> shampoosByIngredient = shampooRepo.findByIngredient(ingredientToDelete);
+        shampoosByIngredient.forEach(PrintUtil::printShampoo);
+
+        shampoosByIngredient.forEach(shampoo -> shampoo.getIngredients().remove(ingredientToDelete));
+
+        System.out.printf("Number of deleted ingredients with name='%s' is: %d",
+                nameToDelete, ingredientRepo.deleteAllByName(nameToDelete));
+        System.out.println("-".repeat(180) + "\n");
+        shampooRepo.findAll().forEach(PrintUtil::printShampoo);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -25,7 +26,14 @@ public interface ShampooRepository extends JpaRepository<Shampoo,Long>{
     @Query("SELECT s FROM Shampoo s WHERE s.ingredients.size < :count")
     List<Shampoo> findByCountOfIngredientsLowerThan(@Param("count") int maxCount);
 
+    @Query("SELECT s FROM Shampoo s, IN(s.ingredients) i WHERE i = :ingredient")
+    List<Shampoo> findByIngredient(Ingredient ingredient);
+
+
+
+
     List<Shampoo> findShampooBySizeOrLabel(Size size, Label label);
+
 
 
     List<Shampoo> findBySizeOrLabelOrderByPriceDesc(Size medium, Label s);

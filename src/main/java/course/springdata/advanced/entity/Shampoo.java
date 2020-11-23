@@ -29,10 +29,10 @@ public class Shampoo {
     private Size size;
     @ManyToOne(optional = true)
     private Label label;
-    @ManyToMany(fetch = FetchType.EAGER,cascade = {PERSIST,REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {PERSIST, REFRESH})
     @JoinTable(
-            joinColumns = @JoinColumn(name = "shampoo_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id",referencedColumnName = "id")
+            joinColumns = @JoinColumn(name="shampoo_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="ingredient_id", referencedColumnName = "id")
     )
     private Set<Ingredient> ingredients = new HashSet<>();
 

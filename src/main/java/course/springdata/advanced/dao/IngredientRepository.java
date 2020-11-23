@@ -12,18 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
+@Transactional
 public interface IngredientRepository extends JpaRepository<Ingredient,Long>{
 
     List<Ingredient> findByNameIn(Iterable<String> names);
 
-
-    @Transactional
     int deleteAllByName(String name);
 
-
-
-    Optional<Ingredient> findByName(String names);
+    Optional<Ingredient> findByName(String name);
 
 
 }

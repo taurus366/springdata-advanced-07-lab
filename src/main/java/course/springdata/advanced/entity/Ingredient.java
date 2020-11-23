@@ -22,6 +22,6 @@ public class Ingredient {
     private double price;
 
     @ToString.Exclude
-    @ManyToMany(mappedBy = "ingredients",cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "ingredients")
     private Set<Shampoo> shampoos = new HashSet<>();
 }
