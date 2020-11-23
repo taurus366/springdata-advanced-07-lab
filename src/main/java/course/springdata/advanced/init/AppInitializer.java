@@ -34,7 +34,6 @@ public class AppInitializer implements CommandLineRunner {
 
 
     @Override
-    @Transactional
     public void run(String... args) throws Exception {
 
 //        // Fetch Shampoos by Size
@@ -83,17 +82,28 @@ public class AppInitializer implements CommandLineRunner {
 //                .forEach(PrintUtil::printShampoo);
 //
 //        System.out.println("-".repeat(150)+ "\n");
+
         // Delete ingredients by name
-                String nameToDelete = "Macadamia Oil";
-        Ingredient ingredientToDelete = ingredientRepo.findByName(nameToDelete).get();
-        List<Shampoo> shampoosByIngredient = shampooRepo.findByIngredient(ingredientToDelete);
-        shampoosByIngredient.forEach(PrintUtil::printShampoo);
+//                String nameToDelete = "Macadamia Oil";
+//        Ingredient ingredientToDelete = ingredientRepo.findByName(nameToDelete).get();
+//        List<Shampoo> shampoosByIngredient = shampooRepo.findByIngredient(ingredientToDelete);
+//        shampoosByIngredient.forEach(PrintUtil::printShampoo);
+//
+//        shampoosByIngredient.forEach(shampoo -> shampoo.getIngredients().remove(ingredientToDelete));
+//
+//        System.out.printf("Number of deleted ingredients with name='%s' is: %d",
+//                nameToDelete, ingredientRepo.deleteAllByName(nameToDelete));
+//        System.out.println("-".repeat(180) + "\n");
+//        shampooRepo.findAll().forEach(PrintUtil::printShampoo);
 
-        shampoosByIngredient.forEach(shampoo -> shampoo.getIngredients().remove(ingredientToDelete));
+        // Increase price of ingredients in List by percentage
+        ingredientRepo.findAll().forEach(PrintUtil::printIngredients);
+        System.out.println();
 
-        System.out.printf("Number of deleted ingredients with name='%s' is: %d",
-                nameToDelete, ingredientRepo.deleteAllByName(nameToDelete));
-        System.out.println("-".repeat(180) + "\n");
-        shampooRepo.findAll().forEach(PrintUtil::printShampoo);
+        System.out.println(ingredientRepo.updatePriceOfIngredientsInList(Set.of("Apple","Herbs"), 0.2));
+        System.out.println();
+        ingredientRepo.findAll().forEach(PrintUtil::printIngredients);
+
+
     }
 }
